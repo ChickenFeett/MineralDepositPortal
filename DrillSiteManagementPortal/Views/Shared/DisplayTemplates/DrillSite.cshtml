@@ -1,0 +1,10 @@
+﻿@model DrillSiteManagementPortal.Models.DrillSite
+<div>
+    Drill site #@Model.Id
+</div>
+<div>
+    @foreach (var depthReading in Model.DepthReadings)
+    {
+        @Html.EditorFor(x => depthReading)
+    }
+</div>
