@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -49,7 +52,29 @@ namespace DrillSiteManagementPortal
 
             using (Controller controller = new ErrorController())
             {
-                ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+                try
+                {
+                    ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (Exception exSub in ex.LoaderExceptions)
+                    {
+                        sb.AppendLine(exSub.Message);
+                        FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
+                        if (exFileNotFound != null)
+                        {
+                            if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
+                            {
+                                sb.AppendLine("Fusion Log:");
+                                sb.AppendLine(exFileNotFound.FusionLog);
+                            }
+                        }
+                        sb.AppendLine();
+                    }
+                    Console.WriteLine(sb.ToString());                    
+                }
             }
         }
     }
