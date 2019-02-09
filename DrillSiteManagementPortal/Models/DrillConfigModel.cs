@@ -4,6 +4,7 @@ namespace DrillSiteManagementPortal.Models
 {
     public class DrillConfigModel
     {        
+        public int Id { get; set; }
         // Dip configuration values
         public int NumberOfRecordsToQueryDip { get; set; }
         public int DipMarginOfError { get; set; }

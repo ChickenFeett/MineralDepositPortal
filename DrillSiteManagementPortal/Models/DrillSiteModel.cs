@@ -22,9 +22,8 @@ namespace DrillSiteManagementPortal.Models
         {
         }
 
-        public DrillSiteModel(long id,  double latitude, double longitude, double collarAzimuth, double collarDip, DateTime startDate)
+        public DrillSiteModel(double latitude, double longitude, double collarAzimuth, double collarDip, DateTime startDate)
         {
-            Id = id;
             Latitude = latitude;
             Longitude = longitude;
             CollarAzimuth = collarAzimuth;

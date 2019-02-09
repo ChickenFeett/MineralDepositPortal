@@ -7,6 +7,7 @@ namespace DrillSiteManagementPortal.Models
     {
         public DbSet<DrillSiteModel> DrillSites { get; set; }
         public DbSet<DepthReadingModel> DepthReadings { get; set; }
+        public DbSet<DrillConfigModel> Config { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
