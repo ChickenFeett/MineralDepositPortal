@@ -9,9 +9,17 @@ namespace DrillSiteManagementPortal.Controllers
     {
         public ActionResult Index()
         {
-            // load data from DB
-            var myList = new List<DrillSite>();
-            myList.Add(new DrillSite(1, new Config(5, 3, 1, 5), 123.541, 21.3123, 45, 21, DateTime.Now));
+            var myList = new List<DrillSiteModel>();
+            var drillSite = new DrillSiteModel(1, 123.541, 21.3123, 45, 21, DateTime.Now);
+            drillSite.AddReading(new DepthReadingModel(1, 23, 51));
+            drillSite.AddReading(new DepthReadingModel(2, 24, 51.123f));
+            drillSite.AddReading(new DepthReadingModel(3, 25, 51.45f));
+            myList.Add(drillSite);
+            using (var db = new DsmContext())
+            {
+                db.Add(drillSite);
+            }
+                // load data from DB
             // display data
             return View(myList);
         }        

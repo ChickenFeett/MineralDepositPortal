@@ -1,4 +1,4 @@
-﻿@model List<DrillSiteManagementPortal.Models.DrillSite>
+﻿@model List<DrillSiteManagementPortal.Models.DrillSiteModel>
 @{
     ViewBag.Title = "DSM";
     ViewBag.Description = "Main Portal";
@@ -8,3 +8,12 @@
 <div>
     @Html.DisplayForModel()
 </div>
+
+
+@section ViewSpecificJavascript {
+    <script>
+        $(window).on('load', function () {
+            $('.edit').editable('save.php');
+        });
+    </script>
+}
