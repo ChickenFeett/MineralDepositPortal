@@ -17,21 +17,21 @@ namespace DrillSiteManagementPortal.Services
             int numberOfDrillSites = DefaultNumberOfDrillSites,
             int maxDepthReadingsPerSite = DefaultNumberOfDepthReadings)
         {
+            var random = new Random();
             var drillSites = new List<DrillSiteService>();
             var config = DrillConfigService.GetInstance().DrillConfigModel;
             for (var i = 0; i < numberOfDrillSites; i++)
             {
-                var drillSite = CreateRandomDrillSite(config);
-                var rand = new Random();
+                var drillSite = CreateRandomDrillSite(config, random);
                 // random number of depth readings, between 1 and 100
-                var nDepthReadings = Convert.ToInt16(rand.NextDouble() * maxDepthReadingsPerSite) + 1;
+                var nDepthReadings = Convert.ToInt16(random.NextDouble() * maxDepthReadingsPerSite) + 1;
                 // retrieve dip and azimuth from root
                 var dipTrend = drillSite.DrillSiteModel.CollarDip;
                 var azimuthTrend = drillSite.DrillSiteModel.CollarAzimuth;
                 for (var j = 0; j < nDepthReadings; j++)
                 {
                     // create random depth reading, with dip and azimuth in between bounds
-                    var reading = CreateRandomDepthReading(dipTrend, config.DipMarginOfError, azimuthTrend, config.AzimuthMarginOfError);
+                    var reading = CreateRandomDepthReading(random, dipTrend, config.DipMarginOfError, azimuthTrend, config.AzimuthMarginOfError);
                     drillSite.AddReading(reading);
                     // retrieve number of records (as configured) to create dip average
                     var records = DrillSiteService.RetrieveLastXRecords(
@@ -52,9 +52,8 @@ namespace DrillSiteManagementPortal.Services
             return drillSites;
         }
 
-        public static DrillSiteService CreateRandomDrillSite(DrillConfigModel config)
+        public static DrillSiteService CreateRandomDrillSite(DrillConfigModel config, Random random)
         {
-            var random = new Random();
             var lng = random.NextDouble() * 360 - 180;
             var lat = random.NextDouble() * 180 - 90;
             var azimuth = random.NextDouble() * 360;
@@ -64,18 +63,15 @@ namespace DrillSiteManagementPortal.Services
             return new DrillSiteService(model, config);
         }
 
-        public static DepthReadingModel CreateRandomDepthReading(double dipTrend, double dipMarginOfError, double azimuthTrend, double azimuthMarginOfError)
+        public static DepthReadingModel CreateRandomDepthReading(Random random, double dipTrend, double dipMarginOfError, double azimuthTrend, double azimuthMarginOfError)
         {
             // calculate the upper and lower bounds of the dip & azimuth values
-            var upperDip = Math.Min(90f, dipTrend + dipMarginOfError);
-            var lowerDip = Math.Max(0, dipTrend - dipMarginOfError);
-            var upperAzimuth = Math.Min(360f, azimuthTrend + azimuthMarginOfError);
-            var lowerAzimuth = Math.Max(0, azimuthTrend - azimuthMarginOfError);
-
-            var random = new Random();
-            var dip = Convert.ToSingle(random.NextDouble() * (upperDip + lowerDip) - lowerDip);
-            var azimuth = Convert.ToSingle(random.NextDouble() * (upperAzimuth + lowerAzimuth) - lowerAzimuth);
-            return new DepthReadingModel(dip, azimuth);
+            var lowestPossibleDip = Math.Min(90, Math.Max(0, dipTrend - dipMarginOfError));
+            var lowestPossibleAzimuth = Math.Min(360, Math.Max(0, azimuthTrend - azimuthMarginOfError));
+            
+            var dip = random.NextDouble() * dipMarginOfError * 2 + lowestPossibleDip;
+            var azimuth = random.NextDouble() * azimuthMarginOfError * 2 + lowestPossibleAzimuth;
+            return new DepthReadingModel(dip, azimuth, 100.0);
         }
     }
 }

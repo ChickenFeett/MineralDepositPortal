@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DrillSiteManagementPortal.Models;
 using System;
 using System.Linq;
-using DrillSiteManagementPortal.Services;
+using DrillSiteManagementPortal.Migrations;
 using Microsoft.Data.Sqlite;
 
 namespace DrillSiteManagementPortal.Controllers
@@ -12,11 +12,13 @@ namespace DrillSiteManagementPortal.Controllers
     {
         public ActionResult Index()
         {
+            
             var drillSites = new List<DrillSiteModel>();
             try
             {
                 using (var db = new DsmContext())
                 {
+                    db.TryCreateDatabase();
                     drillSites = db.DrillSites.ToList();
                 }
             }

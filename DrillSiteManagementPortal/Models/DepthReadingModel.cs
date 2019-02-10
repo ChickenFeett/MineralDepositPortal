@@ -10,10 +10,11 @@ namespace DrillSiteManagementPortal.Models
         public double TrustWorthiness { get; set; }
 
 
-        public DepthReadingModel(double dip, double azimuth)
+        public DepthReadingModel(double dip, double azimuth, double trustWorthiness)
         {
             Dip = dip;
             Azimuth = azimuth;
+            TrustWorthiness = trustWorthiness;
         }
 
         public bool IsTrustworthy => TrustWorthiness - 100.0 < 0.000001;

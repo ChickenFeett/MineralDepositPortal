@@ -12,22 +12,19 @@ namespace DrillSiteManagementPortal.Models
         // location of the collar
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        // Azimuth and Dip of the collar
-        public double CollarAzimuth { get; set; }
+        // Dip and Azimuth of the collar
         public double CollarDip { get; set; }
+        public double CollarAzimuth { get; set; }
         // collection of readings between 0-100
         public ICollection<DepthReadingModel> DepthReadings { get; set; }
+        
 
-        public DrillSiteModel()
-        {
-        }
-
-        public DrillSiteModel(double latitude, double longitude, double collarAzimuth, double collarDip, DateTime startDate)
+        public DrillSiteModel(double latitude, double longitude, double collarDip, double collarAzimuth, DateTime startDate)
         {
             Latitude = latitude;
             Longitude = longitude;
-            CollarAzimuth = collarAzimuth;
             CollarDip = collarDip;
+            CollarAzimuth = collarAzimuth;
             StartDate = startDate;
             DepthReadings = new List<DepthReadingModel>();
         }

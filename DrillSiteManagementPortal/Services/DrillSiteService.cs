@@ -43,7 +43,7 @@ namespace DrillSiteManagementPortal.Services
 
         public static List<DepthReadingModel> RetrieveLastXRecords(List<DepthReadingModel> readings, int startingIndex, int numberOfRecordsToRetrieve)
         {
-            var nRecordsAvailableAfterIndex = Math.Min(startingIndex - readings.Count(), numberOfRecordsToRetrieve);
+            var nRecordsAvailableAfterIndex = Math.Min(readings.Count() - startingIndex, numberOfRecordsToRetrieve);
             return readings.Skip(startingIndex).Take(nRecordsAvailableAfterIndex).ToList();
         }
     }

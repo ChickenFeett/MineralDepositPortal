@@ -11,7 +11,12 @@ namespace DrillSiteManagementPortal.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=dsm.db");
+           optionsBuilder.UseSqlite("Data Source=dsm.db");
+        }
+
+        public void TryCreateDatabase()
+        {
+            Database.EnsureCreated();
         }
     }
 }

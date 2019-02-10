@@ -22,10 +22,12 @@ namespace DrillSiteManagementPortal.Controllers
                 using (var db = new DsmContext())
                 {
                     // remove all data
+                    var allDepthReadings = from readings in db.DepthReadings select readings;
+                    db.DepthReadings.RemoveRange(allDepthReadings);
                     var allDrillSites = from sites in db.DrillSites select sites;
                     db.DrillSites.RemoveRange(allDrillSites);
                     // add newly generated data
-                    foreach (var drillSite in drillSites)
+                    foreach (var drillSite in drillSites.Select(x => x.DrillSiteModel))
                         db.Add(drillSite);
                     db.SaveChanges();
                 }
