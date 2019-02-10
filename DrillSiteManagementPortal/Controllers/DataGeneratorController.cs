@@ -21,6 +21,7 @@ namespace DrillSiteManagementPortal.Controllers
             { 
                 using (var db = new DsmContext())
                 {
+                    db.TryCreateDatabase();
                     // remove all data
                     var allDepthReadings = from readings in db.DepthReadings select readings;
                     db.DepthReadings.RemoveRange(allDepthReadings);

@@ -4,6 +4,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -17,8 +18,9 @@ namespace DrillSiteManagementPortal
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            GlobalConfiguration.Configure(WebApiConfig.Register);  // Register Web API
+            RouteConfig.RegisterRoutes(RouteTable.Routes); // Register HTTP routes
+            BundleConfig.RegisterBundles(BundleTable.Bundles); // Register CSS/JS bundles
         }
 
         protected void Application_Error(object sender, EventArgs e)

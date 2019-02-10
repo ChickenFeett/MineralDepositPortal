@@ -404,7 +404,6 @@
     <Content Include="Web.config" />
     <Content Include="Views\Shared\DisplayTemplates\DrillSiteModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DepthReadingModel.cshtml" />
-    <Content Include="Views\ViewSpecificJavascript.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -413,8 +412,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DataGeneratorController.cs" />
-    <Compile Include="Controllers\DsmApiController .cs" />
+    <Compile Include="Controllers\DepthReadingsController.cs" />
     <Compile Include="Migrations\20190210045258_DsmMigration.cs" />
     <Compile Include="Migrations\20190210045258_DsmMigration.designer.cs">
       <DependentUpon>20190210045258_DsmMigration.cs</DependentUpon>

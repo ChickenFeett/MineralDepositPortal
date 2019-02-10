@@ -1,3 +1,4 @@
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace DrillSiteManagementPortal.Models
@@ -18,5 +19,10 @@ namespace DrillSiteManagementPortal.Models
         }
 
         public bool IsTrustworthy => TrustWorthiness - 100.0 < 0.000001;
+
+        public string Serialize()
+        {
+            return Json.Encode(this);
+        }
     }
 }

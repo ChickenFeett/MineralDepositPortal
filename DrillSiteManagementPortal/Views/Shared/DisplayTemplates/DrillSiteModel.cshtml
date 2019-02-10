@@ -1,10 +1,26 @@
 ﻿@model DrillSiteManagementPortal.Models.DrillSiteModel
-<div>
-    Drill site #@Model.Id
-</div>
-<div>
-    @foreach (var depthReading in Model.DepthReadings)
-    {
-        @Html.EditorFor(model => depthReading)
-    }
+<div id="@Model.Id", class="drill_site_container">
+    <table>
+        <thead>
+        <tr>
+            <th>Drill site #@Model.Id</th>
+            <th>@Model.StartDate</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    @String.Format("Dip: {0:F2}°", Model.CollarDip)
+                </th>
+                <th>
+                    @String.Format("Azimuth: {0:F2}°", Model.CollarAzimuth)
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    @String.Format("Number of Readings: {0}", @Model.DepthReadings.Count)
+                </th>
+            </tr>
+        </tbody>
+    </table>
 </div>
