@@ -15,19 +15,7 @@ namespace DrillSiteManagementPortal.Services
             Config = config;
             DrillSiteModel = drillSiteModel;         
         }
-
-        public static DrillSiteService CreateRandomDrillSite()
-        {
-            var random = new Random();
-            var lng = random.NextDouble() * 360 - 180;
-            var lat = random.NextDouble() * 180 - 90;
-            var azimuth = random.NextDouble() * 360;
-            var dip = random.NextDouble() * 90;
-            var date = DateTime.Now - TimeSpan.FromDays(random.NextDouble() * 7); // up to a week in the past
-            var model = new DrillSiteModel(lat, lng, dip, azimuth, date);
-            return new DrillSiteService(model, Config);
-        }
-
+        
         public void AddReading(DepthReadingModel reading)
         {
             CalculateTrustWorthiness(reading, DrillSiteModel.DepthReadings.ToList(), DrillSiteModel.DepthReadings.Count());

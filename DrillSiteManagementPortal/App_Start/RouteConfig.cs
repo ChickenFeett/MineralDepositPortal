@@ -17,8 +17,8 @@ namespace DrillSiteManagementPortal
 
             routes.MapRoute(
                 name: "GenerateData",
-                url: "{controller}/GenerateData",
-                defaults: new { controller = "Home", action = "GenerateData", id = UrlParameter.Optional }
+                url: "GenerateData",
+                defaults: new { controller = "DataGeneratorController", action = "GenerateData", id = UrlParameter.Optional }
             );
         }
     }
