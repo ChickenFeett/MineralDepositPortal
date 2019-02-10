@@ -402,8 +402,8 @@
     <Content Include="Content\js\plugins\jquery\jquery.jeditable.min.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
-    <Content Include="Views\Shared\DisplayTemplates\DrillSite.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DepthReading.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DrillSiteModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DepthReadingModel.cshtml" />
     <Content Include="Views\ViewSpecificJavascript.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
