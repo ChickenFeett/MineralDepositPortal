@@ -24,7 +24,7 @@ namespace DrillSiteManagementPortal.Services
             {
                 var drillSite = CreateRandomDrillSite(config, random);
                 // random number of depth readings, between 1 and 100
-                var nDepthReadings = Convert.ToInt16(random.NextDouble() * maxDepthReadingsPerSite) + 1;
+                var nDepthReadings = (int)(random.NextDouble() * maxDepthReadingsPerSite) + 1;
                 // retrieve dip and azimuth from root
                 var dipTrend = drillSite.DrillSiteModel.CollarDip;
                 var azimuthTrend = drillSite.DrillSiteModel.CollarAzimuth;
@@ -34,15 +34,15 @@ namespace DrillSiteManagementPortal.Services
                     var reading = CreateRandomDepthReading(random, dipTrend, config.DipMarginOfError, azimuthTrend, config.AzimuthMarginOfError);
                     drillSite.AddReading(reading);
                     // retrieve number of records (as configured) to create dip average
-                    var records = DrillSiteService.RetrieveLastXRecords(
+                    var records = DrillSiteService.RetrieveXRecordsBefore(
                         drillSite.DrillSiteModel.DepthReadings.ToList(),
-                        j,
+                        j+1,
                         config.NumberOfRecordsToQueryDip);
                     dipTrend = records.Sum(x => x.Dip) / records.Count();
                     // retrieve number of records (as configured) to create azimuth average
-                    records = DrillSiteService.RetrieveLastXRecords(
+                    records = DrillSiteService.RetrieveXRecordsBefore(
                         drillSite.DrillSiteModel.DepthReadings.ToList(), 
-                        j, 
+                        j+1, 
                         config.NumberOfRecordsToQueryAzimuth);
                     azimuthTrend = records.Sum(x => x.Azimuth) / records.Count();
                 }

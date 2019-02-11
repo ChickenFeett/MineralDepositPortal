@@ -10,14 +10,6 @@ namespace DrillSiteManagementPortal.Services
     /// </summary>
     public class DrillConfigService
     {
-        // TODO - consider putting the default values in a config.xml file
-        // Default dip configuration values
-        private const int DefaultNumberOfRecordsToQueryDip = 5;
-        private const int DefaultDipMarginOfError = 3;
-        // Default azimuth configuration values
-        private const int DefaultNumberOfRecordsToQueryAzimuth = 1;
-        private const int DefaultAzimuthMarginOfError = 5;
-
         private static DrillConfigService _instance;
         public readonly DrillConfigModel DrillConfigModel;
 
@@ -72,11 +64,7 @@ namespace DrillSiteManagementPortal.Services
         /// </summary>
         public DrillConfigService()
         {
-            DrillConfigModel = new DrillConfigModel(
-                DefaultNumberOfRecordsToQueryDip,
-                DefaultDipMarginOfError,
-                DefaultNumberOfRecordsToQueryAzimuth, 
-                DefaultAzimuthMarginOfError);
+            DrillConfigModel = new DrillConfigModel();
         }
 
         public DrillConfigService(int numberOfRecordsToQueryDip, int dipMarginOfError, int numberOfRecordsToQueryAzimuth, int azimuthMarginOfError)

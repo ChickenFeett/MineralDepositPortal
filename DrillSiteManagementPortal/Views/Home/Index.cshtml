@@ -17,51 +17,106 @@
 
 @section ViewSpecificJavascript {
     <script>
+        var currentlyLoadedDrillSiteId = -1;
+
         $(window).on('load', enableJsEditable());
 
         function enableJsEditable() {
-                $('.editable_fields').editable('save.php');
-            }
+            // azimuth editable
+            $('.editable_azimuth').editable(function(value) {
+                sendAjaxPostRequest(this.dataset.drill_site_id, this.id, "azimuth", value );
+                },
+                {
+                    indicator: 'Saving...',
+                    tooltip: 'Click to edit...'
+                });
+            // dip editable
+            $('.editable_dip').editable(function(value) {
+                    sendAjaxPostRequest(this.dataset.drill_site_id, this.id, "dip", value);
+                },
+                {
+                    indicator: 'Saving...',
+                    tooltip: 'Click to edit...'
+                });
+        }
+
+        function sendAjaxPostRequest(drillSiteId, readingId, key, value) {
+            var url = '../api/DepthReadings?drillSiteId=' + drillSiteId + '&' + 'readingId=' + readingId + '&' + key + '=' + value;
+            $.post(url,
+                function (returnedData) {
+                    LoadDepthReadings(this.id, true);
+                });
+        }
 
         $('.drill_site_container').on('click',
             function() {
-                // Load data for drill site
-                var drillSiteId = this.id;
-                $.ajax({
-                    method: "GET",
-                    url: "../api/DepthReadings/" + drillSiteId,
-                    success: function (data) {
-                        $('#depth_readings_container').html(""); // clear the readings container
-                        data.forEach(function (row) {
-                            var reading = JSON.parse(row);
-                            var html = GenerateDepthReadingHtml(reading.Id,
-                                reading.Dip,
-                                reading.Azimuth,
-                                reading.IsTrustworthy);
-                            $('#depth_readings_container').append(html);
-                        });
-                        console.log("Ajax successful");
-                        enableJsEditable();
-                    }
-                });
-                //
+                LoadDepthReadings(this.id, false);
             });
 
-        function GenerateDepthReadingHtml(id, dip, azimuth, isTrustworthy) {
-            return '<div id="' + String(id) + '", class="depth_readings_container">'
-                + '    <table>'
-                + '        <tbody>'
-                + '            <tr>'
-                + '                <th>Dip: <span class="editable_fields">' + String(dip.toFixed(2)) + "</span>°"
-                + '                </th>'
-                + '                <th>Azimuth: <span class="editable_fields">' + String(azimuth.toFixed(2)) + "</span>°"
-                + '                </th>'
-                + '                <th>Trustworthy: <span class="editable_fields">'  + String(isTrustworthy) + "</span>"
-                + '                </th>'
-                + '            </tr>'
-                + '        </tbody>'
-                + '    </table>'
-                + '</div>';
+        function LoadDepthReadings(drillSiteId, forceLoad) {
+            // Load data for drill site
+            if (!forceLoad
+                && Number.isInteger(currentlyLoadedDrillSiteId)
+                && currentlyLoadedDrillSiteId > 0
+                && currentlyLoadedDrillSiteId === parseInt(drillSiteId))
+                return; // we have already loaded the data for this particular drill site!
+
+            $.ajax({
+                method: "GET",
+                url: "../api/DepthReadings/" + drillSiteId,
+                success: function(data) {
+                    $('#depth_readings_container').html(""); // clear the readings container
+                    data.forEach(function(row) {
+                        var reading = JSON.parse(row);
+                        var html = GenerateDepthReadingHtml(
+                            drillSiteId,
+                            reading.Id,
+                            reading.Dip,
+                            reading.Azimuth,
+                            reading.IsTrustworthy);
+                        $('#depth_readings_container').append(html);
+                    });
+                    enableJsEditable(); // enable JsEditable for newly created html elements
+                    currentlyLoadedDrillSiteId = parseInt(drillSiteId);
+                }
+            });
+        }
+
+        function GenerateDepthReadingHtml(drillSiteId, id, dip, azimuth, isTrustworthy) {
+            return '<div id="' +
+                String(id) +
+                '", class="depth_readings_container">' +
+                '    <table>' +
+                '        <tbody>' +
+                '            <tr>' +
+                '                <th>Dip: ' +
+                '                    <span data-drill_site_id="' +
+                drillSiteId +
+                '" id="' +
+                id +
+                '" class="editable_dip">' +
+                String(dip.toFixed(2)) +
+                "</span>°" +
+                '                </th>' +
+                '                <th>Azimuth: ' +
+                '                    <span data-drill_site_id="' +
+                drillSiteId +
+                '" id="' +
+                id +
+                '" class="editable_azimuth">' +
+                String(azimuth.toFixed(2)) +
+                "</span>°" +
+                '                </th>' +
+                '                <th>Trustworthy: <span id="' +
+                id +
+                '">' +
+                String(isTrustworthy) +
+                '</span>' +
+                '                </th>' +
+                '            </tr>' +
+                '        </tbody>' +
+                '    </table>' +
+                '</div>';
         }
     </script>
 }
