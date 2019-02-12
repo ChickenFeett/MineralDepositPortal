@@ -1,7 +1,7 @@
 ﻿@using HtmlHelper = System.Web.WebPages.Html.HtmlHelper
 @model List<DrillSiteManagementPortal.Models.DrillSiteModel>
 @{
-    ViewBag.Title = "DSM";
+    ViewBag.Title = "DSM - Survey Readings";
     ViewBag.Description = "Main Portal";
 }
 
@@ -39,6 +39,7 @@
                     tooltip: 'Click to edit...',
                     style: 'inherit',
                     width: ($('.editable_azimuth').width() * 2) + "px",
+                    onblur: 'submit'
                 });
             // dip editable
             $('.editable_dip').editable(function (value) {
@@ -49,6 +50,7 @@
                     tooltip: 'Click to edit...',
                     style: 'inherit',
                     width: ($('.editable_dip').width() * 2) + "px",
+                    onblur: 'submit'
                 });
             // depth editable
             $('.editable_depth').editable(function (value) {
@@ -59,6 +61,7 @@
                     tooltip: 'Click to edit...',
                     style: 'inherit',
                     width: ($('.editable_depth').width() * 2) + "px",
+                    onblur: 'submit'
                 }); 
         }
 
