@@ -20,6 +20,14 @@
             </tr>
             <tr>
                 <th>
+                    @String.Format("Latitude: {0}", Model.Latitude)
+                </th>
+                <th>
+                    @String.Format("Longitude: {0}°", Model.Longitude)
+                </th>
+            </tr>
+            <tr>
+                <th>
                     @String.Format("Number of Readings: {0}", @Model.DepthReadings.Count)
                 </th>
             </tr>
