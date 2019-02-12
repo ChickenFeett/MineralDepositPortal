@@ -83,7 +83,7 @@ namespace DrillSiteManagementPortal.Services
             
             var dip = random.NextDouble() * (highestPossibleDip - lowestPossibleDip) + lowestPossibleDip;
             var azimuth = random.NextDouble() * (highestPossibleAzimuth - lowestPossibleAzimuth) + lowestPossibleAzimuth;
-            return new DepthReadingModel(dip, azimuth, 100.0);
+            return new DepthReadingModel(index + random.NextDouble(), dip, azimuth, 100.0);
         }
     }
 }

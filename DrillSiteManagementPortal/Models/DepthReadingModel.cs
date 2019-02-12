@@ -8,12 +8,14 @@ namespace DrillSiteManagementPortal.Models
     {
         public long Id { get; set; }
         public double Dip { get; set; }
+        public double Depth { get; set; }
         public double Azimuth { get; set; }
         public double TrustWorthiness { get; set; }
 
 
-        public DepthReadingModel(double dip, double azimuth, double trustWorthiness)
+        public DepthReadingModel(double depth, double dip, double azimuth, double trustWorthiness)
         {
+            Depth = depth;
             Dip = dip;
             Azimuth = azimuth;
             TrustWorthiness = trustWorthiness;

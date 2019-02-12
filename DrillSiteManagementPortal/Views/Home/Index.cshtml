@@ -87,6 +87,7 @@
                             readingCount,
                             drillSiteId,
                             reading.Id,
+                            reading.Depth,
                             reading.Dip,
                             reading.Azimuth,
                             reading.IsTrustworthy);
@@ -98,7 +99,7 @@
             });
         }
 
-        function GenerateDepthReadingHtml(readingCount, drillSiteId, id, dip, azimuth, isTrustworthy) {
+        function GenerateDepthReadingHtml(readingCount, drillSiteId, id, depth, dip, azimuth, isTrustworthy) {
             var trustWorthyColour = isTrustworthy ? '#aaff9e' : '#fdc8c8;'; // green if trusty, otherwise red 
             return '<div id="' +
                 String(id) +
@@ -106,10 +107,8 @@
                 '    <table style="width: 100%; background-color:' + trustWorthyColour + '">' +
                 '        <tbody>' +
                 '            <tr >' +
-                '                <th style="width: 10%;">#'+
-                String(readingCount) +
-                '                </th>' +
-                '                <th style="width: 45%;">Dip: ' +
+                '                <th style="width: 20%;"> &#x21A7 '+String(depth.toFixed(4)) +'m</th>' +
+                '                <th style="width: 37%;">Dip: ' +
                 '                    <span style="cursor: pointer; display: inline;" data-drill_site_id="' +
                 drillSiteId +
                 '" id="' +
@@ -118,7 +117,7 @@
                 String(dip.toFixed(2)) +
                 "</span>°" +
                 '                </th>' +
-                '                <th style="width: 45%;">Azimuth: ' +
+                '                <th style="width: 43%;">Azimuth: ' +
                 '                    <span style="cursor: pointer; display: inline;" data-drill_site_id="' +
                 drillSiteId +
                 '" id="' +

@@ -28,6 +28,7 @@ namespace DrillSiteManagementPortal.Controllers
                     db.DepthReadings.RemoveRange(allDepthReadings);
                     var allDrillSites = from sites in db.DrillSites select sites;
                     db.DrillSites.RemoveRange(allDrillSites);
+                    db.SaveChanges();
                     // add newly generated data
                     foreach (var drillSite in drillSites.Select(x => x.DrillSiteModel))
                     {

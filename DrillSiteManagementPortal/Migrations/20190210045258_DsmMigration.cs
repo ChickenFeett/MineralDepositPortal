@@ -46,6 +46,7 @@ namespace DrillSiteManagementPortal.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Depth = table.Column<double>(nullable: false),
                     Dip = table.Column<double>(nullable: false),
                     Azimuth = table.Column<double>(nullable: false),
                     TrustWorthiness = table.Column<double>(nullable: false),

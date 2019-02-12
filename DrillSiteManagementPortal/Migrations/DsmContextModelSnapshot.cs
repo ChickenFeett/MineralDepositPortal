@@ -21,6 +21,8 @@ namespace DrillSiteManagementPortal.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double>("Depth");
+
                     b.Property<double>("Azimuth");
 
                     b.Property<double>("Dip");

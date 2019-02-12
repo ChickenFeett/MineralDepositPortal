@@ -28,7 +28,7 @@ namespace DrillSiteManagementPortal.Controllers
 
                 return drillSite == null
                     ? new[] {"no result"}
-                    : drillSite.DepthReadings.Select(x => x.Serialize());
+                    : drillSite.DepthReadings.OrderBy(x => x.Depth).Select(x => x.Serialize());
             }
         }
 
