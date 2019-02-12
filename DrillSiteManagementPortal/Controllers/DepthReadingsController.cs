@@ -28,7 +28,7 @@ namespace DrillSiteManagementPortal.Controllers
 
                 return drillSite == null
                     ? new[] {"no result"}
-                    : drillSite.DepthReadings.OrderBy(x => x.Depth).Select(x => x.Serialize());
+                    : drillSite.DepthReadings.OrderBy(x => x.Id).Select(x => x.Serialize());
             }
         }
 
@@ -54,7 +54,7 @@ namespace DrillSiteManagementPortal.Controllers
                     db.SaveChanges();
                 }
             }
-            catch (SqliteException ex)
+            catch (SqliteException)
             {
                 // do not want to output exception details to user (for security reasons)
                 Console.WriteLine("Failed - a database related exception occurred");
@@ -83,7 +83,7 @@ namespace DrillSiteManagementPortal.Controllers
                     db.SaveChanges();
                 }
             }
-            catch (SqliteException ex)
+            catch (SqliteException)
             {
                 // do not want to output exception details to user (for security reasons)
                 Console.WriteLine("Failed - a database related exception occurred");
@@ -101,22 +101,31 @@ namespace DrillSiteManagementPortal.Controllers
             DrillSiteService.UpdateReadingsTrustworthiness(affectedReadings, indexToUpdate);
         }
 
-        // POST api/<controller>
-        public void Post(string myData)
-        {
-            Console.WriteLine($"{myData}");
-            //Console.WriteLine(data);
-        }
 
-        /// <summary>
-        ///     Used to update a single value of a Depth Reading
-        ///     Usage: // PUT api/<controller>/<reading_id>
-        /// </summary>
-        /// <param name="id">Reading ID</param>
-        /// <param name="value">Jsonified string, in the format of {key: value}</param>
-        public void Put(int id, [FromBody] string value)
+        // POST api/<controller>
+        public void PostDepth(int drillSiteId, int readingId, string depth)
         {
-            Console.WriteLine($"{id}: {value}");
+            try
+            {
+                using (var db = new DsmContext())
+                {
+                    // retrieve requested "current" reading
+                    var currentReading = db.DepthReadings.FirstOrDefault(x => x.Id == readingId);
+                    if (currentReading == null)
+                    {
+                        Console.WriteLine("Could not find the specified reading");
+                        return;
+                    }
+
+                    currentReading.Depth = Convert.ToDouble(depth); // TODO - handle invalid input
+                    db.SaveChanges();
+                }
+            }
+            catch (SqliteException)
+            {
+                // do not want to output exception details to user (for security reasons)
+                Console.WriteLine("Failed - a database related exception occurred");
+            }
         }
     }
 }

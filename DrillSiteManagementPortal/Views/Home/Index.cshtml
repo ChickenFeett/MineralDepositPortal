@@ -9,13 +9,13 @@
 <table id="main_body_content" style="width: 100%;">
     <tbody style="width: 100%;">
         <tr style="width: 100%;">
-            <td style="width: 50%; vertical-align: top">
+            <td style="width: 35%; vertical-align: top">
                 <center><b>Drill Sites<b></b></b></center>
                 <div id="drill_sites_container">
                     @Html.DisplayForModel()
                 </div>
             </td>
-            <td style="width: 50%; vertical-align:top">
+            <td style="width: 65%; vertical-align:top">
                 <div id="depth_readings_container" />
             </td>
         </tr>
@@ -40,14 +40,23 @@
                     style: 'inherit'
                 });
             // dip editable
-            $('.editable_dip').editable(function(value) {
-                    sendAjaxPostRequest(this.dataset.drill_site_id, this.id, "dip", value);
-                },
+            $('.editable_dip').editable(function (value) {
+                sendAjaxPostRequest(this.dataset.drill_site_id, this.id, "dip", value);
+            },
                 {
                     indicator: 'Saving...',
                     tooltip: 'Click to edit...',
                     style: 'inherit'
                 });
+            // depth editable
+            $('.editable_depth').editable(function (value) {
+                sendAjaxPostRequest(this.dataset.drill_site_id, this.id, "depth", value);
+            },
+                {
+                    indicator: 'Saving...',
+                    tooltip: 'Click to edit...',
+                    style: 'inherit'
+                }); 
         }
 
         function sendAjaxPostRequest(drillSiteId, readingId, key, value) {
@@ -107,24 +116,25 @@
                 '    <table style="width: 100%; background-color:' + trustWorthyColour + '">' +
                 '        <tbody>' +
                 '            <tr >' +
-                '                <th style="width: 20%;"> &#x21A7 '+String(depth.toFixed(4)) +'m</th>' +
-                '                <th style="width: 37%;">Dip: ' +
-                '                    <span style="cursor: pointer; display: inline;" data-drill_site_id="' +
-                drillSiteId +
-                '" id="' +
-                id +
-                '" class="editable_dip">' +
-                String(dip.toFixed(2)) +
-                "</span>°" +
+                '                <th style="width: 8%;">#' + String(readingCount) +'&nbsp;&nbsp;</th>' +               
+                '                <th style="width: 30%;">Depth: ' +
+                '                    <span style="cursor: pointer; display: inline;" ' +
+                '                          data-drill_site_id="' +drillSiteId +'" ' +
+                '                          id="' +id +'" class="editable_depth">' +
+                                        String(depth.toFixed(4)) + '</span>m' +
                 '                </th>' +
-                '                <th style="width: 43%;">Azimuth: ' +
-                '                    <span style="cursor: pointer; display: inline;" data-drill_site_id="' +
-                drillSiteId +
-                '" id="' +
-                id +
-                '" class="editable_azimuth">' +
-                String(azimuth.toFixed(2)) +
-                "</span>°" +
+                '                <th style="width: 30%;">Dip: ' +
+                '                    <span style="cursor: pointer; display: inline;" ' +
+                '                          data-drill_site_id="' + drillSiteId + '" ' +
+                '                          id="' + id + '" class="editable_dip">' +
+                                        String(dip.toFixed(2)) + '</span>°' +
+                '                </th>' +
+                '                <th style="width: 30%;">Azimuth: ' +
+                '                    <span style="cursor: pointer; display: inline;" ' +
+                '                          data-drill_site_id="' +drillSiteId +'" ' +
+                '                          id="' +id +'" ' +
+                '                          class="editable_azimuth">' +
+                                        String(azimuth.toFixed(2)) + "</span>°" +
                 '                </th>' +
                 '            </tr>' +
                 '        </tbody>' +
