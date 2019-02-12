@@ -16,6 +16,7 @@ namespace DrillSiteManagementPortal.Controllers
         {
             // create random data
             var drillSites = DataGeneratorService.GenerateDrillSitesWithDepthReadings();
+            
             // try insert data into DB
             try
             { 
@@ -29,8 +30,19 @@ namespace DrillSiteManagementPortal.Controllers
                     db.DrillSites.RemoveRange(allDrillSites);
                     // add newly generated data
                     foreach (var drillSite in drillSites.Select(x => x.DrillSiteModel))
-                        db.Add(drillSite);
-                    db.SaveChanges();
+                    {
+                        var drillSiteDbReference = db.Add(drillSite);
+                        db.SaveChanges();
+                        var depthReadings = DataGeneratorService.GenerateDepthReadings(
+                            drillSite.CollarDip,
+                            drillSite.CollarAzimuth);
+                        foreach (var depthReading in depthReadings)
+                        {
+                            drillSiteDbReference.Entity.DepthReadings.Add(depthReading);
+                            db.SaveChanges();
+                        }
+                    }
+
                 }
             }
             catch (SqliteException ex)

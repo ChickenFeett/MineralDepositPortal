@@ -1,5 +1,3 @@
-using System.Web.Mvc;
-
 namespace DrillSiteManagementPortal.Models
 {
     public class DrillConfigModel

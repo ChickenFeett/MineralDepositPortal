@@ -1,11 +1,13 @@
 ﻿@model DrillSiteManagementPortal.Models.DrillSiteModel
-<div id="@Model.Id", class="drill_site_container">
+
+@{string tableColour = Model.Id % 2 == 0? "#dae7ef;" : "aliceblue;";}
+<div  style="padding: 20px; width: 100%; background-color: @tableColour; cursor: pointer" id="@Model.Id" , class="drill_site_container">
     <table>
         <thead>
-        <tr>
-            <th>Drill site #@Model.Id</th>
-            <th>@Model.StartDate</th>
-        </tr>
+            <tr>
+                <th>Drill site #@Model.Id</th>
+                <th>@Model.StartDate</th>
+            </tr>
         </thead>
         <tbody>
             <tr>

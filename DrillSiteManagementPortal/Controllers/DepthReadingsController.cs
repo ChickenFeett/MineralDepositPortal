@@ -96,8 +96,8 @@ namespace DrillSiteManagementPortal.Controllers
             // starting index is the current index - the number of records necessary for the query 
             // e.g. if we need to query 3 records and current index is 35, then start index would be 32
             var indexOfFirstRequiredReading = Math.Max(0, index - nRecordsRequired);
-            var indexToUpdate = index + 1 - indexOfFirstRequiredReading;
-            var affectedReadings = drillSite.DepthReadings.Skip(indexOfFirstRequiredReading).Take(nRecordsRequired + indexToUpdate).ToList();
+            var indexToUpdate = index - indexOfFirstRequiredReading;
+            var affectedReadings = drillSite.DepthReadings.OrderBy(x => x.Id).Skip(indexOfFirstRequiredReading).Take(nRecordsRequired * 2 + 1).ToList();
             DrillSiteService.UpdateReadingsTrustworthiness(affectedReadings, indexToUpdate);
         }
 

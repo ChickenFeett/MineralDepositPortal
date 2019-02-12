@@ -400,6 +400,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\js\plugins\jquery\jquery.jeditable.min.js" />
+    <Content Include="Content\css\DsmStyle.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\DisplayTemplates\DrillSiteModel.cshtml" />

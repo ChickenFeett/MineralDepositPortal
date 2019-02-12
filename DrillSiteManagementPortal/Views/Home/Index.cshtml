@@ -5,15 +5,23 @@
     ViewBag.Description = "Main Portal";
 }
 
-@* container for drill sites *@
-<div id="drill_sites_container">
-    @Html.DisplayForModel()
-</div>
+@* container for drill sites  *@
+<table id="main_body_content" style="width: 100%;">
+    <tbody style="width: 100%;">
+        <tr style="width: 100%;">
+            <td style="width: 50%; vertical-align: top">
+                <center><b>Drill Sites<b></b></b></center>
+                <div id="drill_sites_container">
+                    @Html.DisplayForModel()
+                </div>
+            </td>
+            <td style="width: 50%; vertical-align:top">
+                <div id="depth_readings_container" />
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-@* container for depth readings *@
-<div id="depth_readings_container">
-
-</div>
 
 @section ViewSpecificJavascript {
     <script>
@@ -28,7 +36,8 @@
                 },
                 {
                     indicator: 'Saving...',
-                    tooltip: 'Click to edit...'
+                    tooltip: 'Click to edit...',
+                    style: 'inherit'
                 });
             // dip editable
             $('.editable_dip').editable(function(value) {
@@ -36,15 +45,18 @@
                 },
                 {
                     indicator: 'Saving...',
-                    tooltip: 'Click to edit...'
+                    tooltip: 'Click to edit...',
+                    style: 'inherit'
                 });
         }
 
         function sendAjaxPostRequest(drillSiteId, readingId, key, value) {
+            $('.main_body_content').css('pointer-events:none; width: 100%;');
             var url = '../api/DepthReadings?drillSiteId=' + drillSiteId + '&' + 'readingId=' + readingId + '&' + key + '=' + value;
             $.post(url,
                 function (returnedData) {
-                    LoadDepthReadings(this.id, true);
+                    LoadDepthReadings(drillSiteId, true);
+                    $('.main_body_content').css('width: 100%;');
                 });
         }
 
@@ -64,11 +76,15 @@
             $.ajax({
                 method: "GET",
                 url: "../api/DepthReadings/" + drillSiteId,
-                success: function(data) {
-                    $('#depth_readings_container').html(""); // clear the readings container
-                    data.forEach(function(row) {
+                success: function (data) {
+                    // clear the readings container and replace with title
+                    $('#depth_readings_container').html("<center><b>Drill Site #" + drillSiteId + "<b></center>");
+                    var readingCount = 0;
+                    data.forEach(function (row) {
+                        readingCount++;
                         var reading = JSON.parse(row);
                         var html = GenerateDepthReadingHtml(
+                            readingCount,
                             drillSiteId,
                             reading.Id,
                             reading.Dip,
@@ -82,15 +98,19 @@
             });
         }
 
-        function GenerateDepthReadingHtml(drillSiteId, id, dip, azimuth, isTrustworthy) {
+        function GenerateDepthReadingHtml(readingCount, drillSiteId, id, dip, azimuth, isTrustworthy) {
+            var trustWorthyColour = isTrustworthy ? '#aaff9e' : '#fdc8c8;'; // green if trusty, otherwise red 
             return '<div id="' +
                 String(id) +
                 '", class="depth_readings_container">' +
-                '    <table>' +
+                '    <table style="width: 100%; background-color:' + trustWorthyColour + '">' +
                 '        <tbody>' +
-                '            <tr>' +
-                '                <th>Dip: ' +
-                '                    <span data-drill_site_id="' +
+                '            <tr >' +
+                '                <th style="width: 10%;">#'+
+                String(readingCount) +
+                '                </th>' +
+                '                <th style="width: 45%;">Dip: ' +
+                '                    <span style="cursor: pointer; display: inline;" data-drill_site_id="' +
                 drillSiteId +
                 '" id="' +
                 id +
@@ -98,20 +118,14 @@
                 String(dip.toFixed(2)) +
                 "</span>°" +
                 '                </th>' +
-                '                <th>Azimuth: ' +
-                '                    <span data-drill_site_id="' +
+                '                <th style="width: 45%;">Azimuth: ' +
+                '                    <span style="cursor: pointer; display: inline;" data-drill_site_id="' +
                 drillSiteId +
                 '" id="' +
                 id +
                 '" class="editable_azimuth">' +
                 String(azimuth.toFixed(2)) +
                 "</span>°" +
-                '                </th>' +
-                '                <th>Trustworthy: <span id="' +
-                id +
-                '">' +
-                String(isTrustworthy) +
-                '</span>' +
                 '                </th>' +
                 '            </tr>' +
                 '        </tbody>' +
